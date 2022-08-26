@@ -3,7 +3,8 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { createClient } from "next-sanity";
 import imageUrlBuilder from '@sanity/image-url'
-
+import PortableText from "react-portable-text"
+// import BlockContent from "@sanity/block-content-to-react";
 export default function Home({ animals }) {
 
   const client = createClient({
@@ -14,6 +15,16 @@ export default function Home({ animals }) {
   });
   const builder = imageUrlBuilder(client)
 
+  // const serializers = {
+  //   types: {
+  //     code: (props) => (
+  //       <pre data-language={props.node.language}>
+  //         <code>{props.node.code}</code>
+  //       </pre>
+  //     ),
+  //   },
+  // }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -22,6 +33,10 @@ export default function Home({ animals }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+   
+
+   
+
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           {
@@ -29,11 +44,23 @@ export default function Home({ animals }) {
               return <div key={animal._id} className="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
                 <div className="sm:w-32 sm:h-32 h-20 w-20 sm:mr-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 flex-shrink-0">
                   {/* <img src={builder.image(animal.image).width(200).url()} alt="image" className='rounded-full' /> */}
-                <Image src={builder.image(animal.image).url() || "Nasir.jpg"}  width={125} height={125} alt="Picture" className='rounded-full'/>
+                  <Image src={builder.image(animal.image).url() || "Nasir.jpg"} width={125} height={125} alt="Picture" className='rounded-full' />
                 </div>
                 <div className="flex-grow sm:text-left text-center mt-6 sm:mt-0">
                   <h2 className="text-gray-900 text-lg title-font font-medium mb-2">{animal.name}</h2>
                   <p className="leading-relaxed text-base">{animal._type}</p>
+                  <PortableText
+                        content={animal.bio}
+                        projectId="eptiw9x7"
+                        dataset="production"
+                        serializers={{
+                          h1: (props) => <h1 style={{ color: "red" }} {...props} />,
+                          li: ({ children }) => <li className="special-list-item">{children}</li>
+                        }}
+                      />
+                       
+                       {/* <BlockContent serializers={serializers} blocks={animal.body} projectId="eptiw9x7" dataset="production" /> */}
+                    
                   <a className="mt-3 text-indigo-500 inline-flex items-center">Learn More
                     <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-2" viewBox="0 0 24 24">
                       <path d="M5 12h14M12 5l7 7-7 7"></path>
