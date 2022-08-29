@@ -2,9 +2,15 @@ import React from 'react'
 import Image from 'next/image'
 import PortableText from "react-portable-text"
 import imageUrlBuilder from '@sanity/image-url'
-import clientInfo from './clientInfo'
+import { createClient } from "next-sanity";
 
-const builder = imageUrlBuilder(clientInfo)
+const client = createClient({
+    projectId: "eptiw9x7",
+    dataset: "production",
+    apiVersion: '2022-03-25',
+    useCdn: true
+  });
+const builder = imageUrlBuilder(client)
 
 const Author = ({ author }) => {
     return (
